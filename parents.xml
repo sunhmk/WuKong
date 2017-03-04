@@ -609,8 +609,8 @@
 		<module>base-jetty</module>
 		<module>base-netty</module>
 	</modules>
-	<profiles>
-		<!-- profile>
+	<!-- profiles>
+		<profile>
 			<id>java8-tests</id>
 			<activation>
 				<jdk>[1.8,)</jdk>
@@ -618,6 +618,6 @@
 			<modules>
 				<module>external/java8-tests</module>
 			</modules>
-		</profile-->
-	</profiles>
+		</profile>
+	</profiles> -->
 </project>
