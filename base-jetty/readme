@@ -1,0 +1,11 @@
+org.eclipse.jetty is used in under spark 2.0
+but hbase uses  org.mortbay.jetty.
+Eclipse is the most recent home。
+
+https://en.wikipedia.org/wiki/Jetty_(web_server)#History
+
+scala:
+servlet
+1:static servlet-for resources
+2：Redirect servlet-for redirect to other url
+3：proxy servlet-for proxy handler
