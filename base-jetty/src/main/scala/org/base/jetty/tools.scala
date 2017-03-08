@@ -1,6 +1,11 @@
+/*
+ * notes to hbase,spark,opentsdb,hadopp,es,flume…
+ */
 package org.base.jetty
+
 import org.eclipse.jetty.server.Server
-private[jetty] object tools {
+
+private[jetty] object Tools {
   def startservice(port: Int, startup: (Int) => (Server, Int), name: String): (Server, Int) =
     {
       def isBindCollision(exception: Throwable): Boolean = {

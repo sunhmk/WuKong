@@ -9,3 +9,15 @@ servlet
 1:static servlet-for resources
 2：Redirect servlet-for redirect to other url
 3：proxy servlet-for proxy handler
+
+
+scalastyle-maven-plugin 
+config file =>scalastyle-config.xml
+check scala code style
+for example:
+importing file is grouped
+class name start with Upper letter;
+file ends with newline;
+annotation must start with a space;
+
+ 

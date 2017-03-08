@@ -1,12 +1,16 @@
+/*
+ * notes to hbase,spark,opentsdb,hadopp,es,flume…
+ */
 package org.base.jetty
-import java.net.URL
 import java.net.URI
-import javax.servlet.http.{ HttpServlet, HttpServletRequest, HttpServletResponse }
-import org.eclipse.jetty.client.api.Response
-import org.eclipse.jetty.servlet._
-import org.eclipse.jetty.proxy.ProxyServlet
+import java.net.URL
+import javax.servlet.http.{HttpServlet, HttpServletRequest, HttpServletResponse}
 
-private[jetty] object servlets {
+import org.eclipse.jetty.client.api.Response
+import org.eclipse.jetty.proxy.ProxyServlet
+import org.eclipse.jetty.servlet._
+
+private[jetty] object Servlets {
 
   type Responder[T] = HttpServletRequest => T
 
@@ -26,7 +30,7 @@ private[jetty] object servlets {
               response.setStatus(HttpServletResponse.SC_OK)
               val result = servletParams.responder(request)
               response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate")
-              //response.setHeader("X-Frame-Options", xFrameOptionsValue)
+              // response.setHeader("X-Frame-Options", xFrameOptionsValue)
               response.getWriter.print(servletParams.extractFn(result))
             } else {
               response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
@@ -38,7 +42,7 @@ private[jetty] object servlets {
             case e: IllegalArgumentException =>
               response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage)
             case e: Exception =>
-              //logWarning(s"GET ${request.getRequestURI} failed: $e", e)
+              // logWarning(s"GET ${request.getRequestURI} failed: $e", e)
               throw e
           }
         }

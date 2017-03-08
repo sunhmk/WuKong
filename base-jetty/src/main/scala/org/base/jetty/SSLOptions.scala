@@ -1,6 +1,7 @@
+/*
+ * notes to hbase,spark,opentsdb,hadopp,es,flume…
+ */
 package org.base.jetty
-
-
 import java.io.File
 import java.security.NoSuchAlgorithmException
 import javax.net.ssl.SSLContext
@@ -93,7 +94,6 @@ private[jetty] case class SSLOptions(
     val providerAlgorithms = context.getServerSocketFactory.getSupportedCipherSuites.toSet
 
     // Log which algorithms we are discarding
-    
 
     val supported = enabledAlgorithms & providerAlgorithms
     require(supported.nonEmpty || sys.env.contains("SPARK_TESTING"),
@@ -141,8 +141,14 @@ private[jetty] object SSLOptions {
    * @param defaults the default configuration
    * @return [[org.apache.spark.SSLOptions]] object
    */
-  /*def parse(conf: SparkConf, ns: String, defaults: Option[SSLOptions] = None): SSLOptions = {
-    val enabled = conf.getBoolean(s"$ns.enabled", defaultValue = defaults.exists(_.enabled))
+
+  def self : SSLOptions = {
+    new SSLOptions();
+  }
+
+  /**
+   * def parse(conf: SparkConf, ns: String, defaults: Option[SSLOptions] = None): SSLOptions = {
+   * val enabled = conf.getBoolean(s"$ns.enabled", defaultValue = defaults.exists(_.enabled))
 
     val keyStore = conf.getOption(s"$ns.keyStore").map(new File(_))
         .orElse(defaults.flatMap(_.keyStore))
@@ -188,8 +194,7 @@ private[jetty] object SSLOptions {
       trustStoreType,
       protocol,
       enabledAlgorithms)
-  }*/
-  def self:SSLOptions = {
-    new SSLOptions();
   }
+  */
+
 }

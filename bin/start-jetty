@@ -28,7 +28,7 @@ JAVA=$JAVA_HOME/bin/java
 JAVA_HEAP_MAX=-Xmx100000m
 echo $JAVA_HOME
 CLASSPATH=${CLASSPATH}
-CLASSPATH=${CLASSPATH}:$basedir'/lib/*':/work/code/sun-code/wukong/base-jetty/target/base-jetty-1.0-SNAPSHOT.jar
+CLASSPATH=${CLASSPATH}:$basedir'/lib/*':/work/code/sun-code/wukong/base-jetty/target/
 export $CLASSPATH
 HADOOP_OPTS="$HADOOP_OPTS"
 CLASS='org.base.jetty.Main'
