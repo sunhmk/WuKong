@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.junit.After;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -36,12 +37,12 @@ public class JavaTest implements Serializable {
   {
     servinfo = Utils.startJettyServer("127.0.0.1", 8989, sslOptions,
               java.util.Arrays.asList(statichandler), "localhost");
-    try {
-        servinfo.server().join();
-      } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+        try {
+			servinfo.server().stop();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
   }
   
   @After

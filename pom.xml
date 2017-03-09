@@ -14,6 +14,8 @@
 		<java.version>1.8</java.version>
 		<scala.version>2.11.8</scala.version>
 		<scala.binary.version>2.11</scala.binary.version>
+		
+    	<javaxservlet.version>3.1.0</javaxservlet.version>
 		<jetty.version>9.4.2.v20170220</jetty.version>
 		   <!-- Package to use when relocating shaded classes. -->
     	<wukong.shade.packageName>org.wukong_project</wukong.shade.packageName>
@@ -58,7 +60,7 @@
 			<artifactId>junit-interface</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		
 	</dependencies>
 	<repositories>
 		<repository>
@@ -528,7 +530,7 @@
 				<version>0.8.0</version>
 				<configuration>
 					<verbose>false</verbose>
-					<failOnViolation>true</failOnViolation>
+					<failOnViolation>false</failOnViolation>
 					<includeTestSourceDirectory>false</includeTestSourceDirectory>
 					<failOnWarning>false</failOnWarning>
 					<sourceDirectory>${basedir}/src/main/scala</sourceDirectory>
@@ -635,6 +637,12 @@
         <version>0.11</version>
         <scope>test</scope>
       </dependency>
+      
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${javaxservlet.version}</version>
+    </dependency>
 			<dependency>
 				<groupId>org.scalacheck</groupId>
 				<artifactId>scalacheck_${scala.binary.version}</artifactId>

@@ -20,4 +20,7 @@ class name start with Upper letter;
 file ends with newline;
 annotation must start with a space;
 
+copy dependcy to ../lib
+mvn dependency:copy-dependencies -DoutputDirectory=.../wukong/lib/  -DincludeScope=runtime
+../bin/start-jetty
  

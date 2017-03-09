@@ -19,7 +19,7 @@ object Main {
     var sslOptions: SSLOptions = null
     statichandler = Servlets.createStaticHandler(".", "/file/")
     sslOptions = SSLOptions.self
-    servinfo = Utils.startJettyServer("127.0.0.1", 8989, sslOptions, java.util.Arrays.asList(statichandler), "localhost")
+    servinfo = Utils.startJettyServer("127.0.0.1", 8988, sslOptions, java.util.Arrays.asList(statichandler), "localhost")
     servinfo.server.join()
   }
 

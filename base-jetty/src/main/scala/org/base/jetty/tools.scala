@@ -23,7 +23,7 @@ private[jetty] object Tools {
       } catch {
         case e: Exception if isBindCollision(e) =>
           throw e
-        case _ =>
+        case _: Throwable =>
           throw new Exception("")
       }
     }

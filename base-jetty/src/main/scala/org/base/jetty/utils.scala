@@ -13,7 +13,6 @@ import org.eclipse.jetty.server.handler.gzip.GzipHandler
 import org.eclipse.jetty.servlet._
 import org.eclipse.jetty.util.component.LifeCycle
 import org.eclipse.jetty.util.thread.{ QueuedThreadPool, ScheduledExecutorScheduler }
-
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.JavaConversions._
 
@@ -60,7 +59,7 @@ private[jetty] object Utils {
     })
     redirectHandler
   }
-  
+
   def startJettyServer(
     hostName: String,
     port: Int,
