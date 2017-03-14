@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.sun</groupId>
+		<artifactId>WuKong</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>com.sun</groupId>
+	<artifactId>base-pb</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>base-pb</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<protobuf.version>3.2.0</protobuf.version>
+	</properties>
+	<build>
+		<outputDirectory>target/scala-${scala.binary.version}/classes</outputDirectory>
+		<testOutputDirectory>target/scala-${scala.binary.version}/test-classes</testOutputDirectory>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+			</resource>
+			<resource>
+				<!-- Include the properties file to provide the build information. -->
+				<directory>${project.build.directory}/extra-resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<!-- Make a jar and put the sources in the jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<!--Make it so assembly:single does nothing in here -->
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven.assembly.version}</version>
+				<configuration>
+					<skipAssembly>true</skipAssembly>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.hadoop</groupId>
+				<artifactId>hadoop-maven-plugins</artifactId>
+				<executions>
+					<execution>
+						<id>compile-protoc</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>protoc</goal>
+						</goals>
+						<configuration>
+              				<protocVersion>${protobuf.version}</protocVersion>
+              				<protocCommand>${protoc.path}</protocCommand>
+							<imports>
+								<param>${basedir}/src/main/protobuf</param>
+							</imports>
+							<source>
+								<directory>${basedir}/src/main/protobuf</directory>
+								<includes>
+									<include>SensorData.proto</include>
+									<include>Messages.proto</include>
+									<include>SimpleClient.proto</include>
+								</includes>
+							</source>
+							<!--<output>${project.build.directory}/generated-sources/java</output> -->
+							<output>${basedir}/src/main/java/</output>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<verbose>true</verbose>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/target</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.hadoop</groupId>
+										<artifactId>hadoop-maven-plugins</artifactId>
+										<versionRange>[2.0.5-alpha,)</versionRange>
+										<goals>
+											<goal>protoc</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>${protobuf.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.scalacheck</groupId>
+			<artifactId>scalacheck_${scala.binary.version}</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-compiler</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-reflect</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-actors</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scalap</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.grpc/grpc-all -->
+	</dependencies>
+	<!--profiles> <profile> <id>compile-protobuf</id> <activation> <property> 
+		<name>compile-protobuf</name> </property> </activation> <build> <plugins> 
+		<plugin> <groupId>org.apache.hadoop</groupId> <artifactId>hadoop-maven-plugins</artifactId> 
+		<executions> <execution> <id>compile-protoc</id> <phase>generate-sources</phase> 
+		<goals> <goal>protoc</goal> </goals> <configuration> <imports> <param>${basedir}/src/main/protobuf</param> 
+		</imports> <source> <directory>${basedir}/src/main/protobuf</directory> <includes> 
+		<include>SensorData.proto</include> </includes> </source> <output>${project.build.directory}/generated-sources/java</output> 
+		<output>${basedir}/src/main/java/</output> </configuration> </execution> 
+		</executions> </plugin> </plugins> </build> </profile> </profiles -->
+</project>

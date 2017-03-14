@@ -1,0 +1,15 @@
+https://github.com/google/protobuf/releases/tag/v3.0.0
+download protobuf3.0
+setup
+source code:README
+download grpc-java and setup as flows:
+https://github.com/grpc/grpc-java/blob/master/COMPILING.md#how-to-build-code-generation-plugin
+command line:
+export CXXFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib"
+./grandlew build
+./gradlew install
+./gradlew test
+
+org.base.grpc.SimpleServer<->org.base.grpc.SimpleClient
+io.grpc.examples.routeguide.RouteGuideServer<->io.grpc.examples.routeguide.RouteGuideClient
+client/server need to be written.

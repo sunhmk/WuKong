@@ -1,0 +1,19 @@
+package org.base.pb;
+option java_generic_services = true;
+option java_generate_equals_and_hash = true;
+option optimize_for = SPEED;
+message RequstMessage{
+  required bytes row    = 1;
+  required bool  online = 2;
+  optional int32 len    = 3;
+}
+message ResponseMessage{
+  required bytes row    = 1;
+  repeated string info  = 2;
+}
+service SimpleService{
+
+
+  rpc Get(RequstMessage)
+     returns(ResponseMessage);
+}

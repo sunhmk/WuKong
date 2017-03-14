@@ -14,11 +14,11 @@
 		<java.version>1.8</java.version>
 		<scala.version>2.11.8</scala.version>
 		<scala.binary.version>2.11</scala.binary.version>
-		
-    	<javaxservlet.version>3.1.0</javaxservlet.version>
+
+		<javaxservlet.version>3.1.0</javaxservlet.version>
 		<jetty.version>9.4.2.v20170220</jetty.version>
-		   <!-- Package to use when relocating shaded classes. -->
-    	<wukong.shade.packageName>org.wukong_project</wukong.shade.packageName>
+		<!-- Package to use when relocating shaded classes. -->
+		<wukong.shade.packageName>org.wukong_project</wukong.shade.packageName>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<PermGen>64m</PermGen>
@@ -28,6 +28,7 @@
 		<test.exclude.tags></test.exclude.tags>
 		<maven-antrun.version>1.8</maven-antrun.version>
 		<build.testJarPhase>prepare-package</build.testJarPhase>
+		<maven.assembly.version>2.6</maven.assembly.version>
 		<jars.target.dir>${project.build.directory}/scala-${scala.binary.version}/jars</jars.target.dir>
 	</properties>
 	<developers>
@@ -60,7 +61,7 @@
 			<artifactId>junit-interface</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
 	<repositories>
 		<repository>
@@ -430,6 +431,11 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.5.1</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -631,18 +637,18 @@
 				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
-			 <dependency>
-        <groupId>com.novocode</groupId>
-        <artifactId>junit-interface</artifactId>
-        <version>0.11</version>
-        <scope>test</scope>
-      </dependency>
-      
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${javaxservlet.version}</version>
-    </dependency>
+			<dependency>
+				<groupId>com.novocode</groupId>
+				<artifactId>junit-interface</artifactId>
+				<version>0.11</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${javaxservlet.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.scalacheck</groupId>
 				<artifactId>scalacheck_${scala.binary.version}</artifactId>
@@ -741,12 +747,6 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.novocode</groupId>
-				<artifactId>junit-interface</artifactId>
-				<version>0.11</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>21.0</version>
@@ -754,8 +754,10 @@
 		</dependencies>
 	</dependencyManagement>
 	<modules>
+		<module>base-pb</module>
 		<module>base-jetty</module>
 		<module>base-netty</module>
+		<module>base-grpc</module>
 		<module>wukong-assembly</module>
 	</modules>
 	<profiles>

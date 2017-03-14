@@ -1,0 +1,29 @@
+package org.base.grpc;
+enum devtype{
+	MACROWAVE = 0;
+	GEO = 1;
+	KEYBAY=2;
+	OTHER= 64;
+}
+message macrowave{
+ optional uint64 id=1;//点位编号
+ optional uint32 lane=2;//车道号
+ optional string date=3;//日期
+ optional uint32 flows=4;//流量
+ optional uint32 spped=5;//速度
+ optional float  occu=6;//占有率
+}
+message geo{
+ optional uint64 id=1;//点位编号
+ optional uint32 lane=2;//车道号
+ optional string date=3;//日期
+ optional uint32 flows=4;//流量
+ optional uint32 spped=5;//速度
+ optional float  occu=6;//占有率
+}
+
+message sensordata
+{
+	repeated macrowave waveinfos=1;
+	repeated geo geoinfos=2;
+}

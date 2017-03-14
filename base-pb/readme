@@ -1,0 +1,33 @@
+protocol buffer support C++,java,python.
+https://github.com/grpc/grpc-java/blob/master/COMPILING.md#how-to-build-code-generation-plugin
+pb uses version 2.5
+ GRPC use at leasr verion 3.0
+upgrade from 2.5 to 3.2.0.
+this project imports 2.5 and 3.0
+pb in hbase 2.0:
+communications in client,hmaster,hregion;
+    <protobuf.version>2.5.0</protobuf.version>
+      <dependency>
+        <groupId>com.google.protobuf</groupId>
+        <artifactId>protobuf-java</artifactId>
+        <version>${protobuf.version}</version>
+      </dependency>
+rpc interface.
+pb in spark:
+nothing
+pb in hadoop 2.7.1:
+for example: org.apache.hadoop.hdfs.protocol.proto"
+hadoop-project-><protobuf.version>2.5.0</protobuf.version>
+      <dependency>
+        <groupId>com.google.protobuf</groupId>
+        <artifactId>protobuf-java</artifactId>
+        <version>${protobuf.version}</version>
+      </dependency>
+      
+hadoop-dfs-project->
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <scope>compile</scope>
+    </dependency>
+ 

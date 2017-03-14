@@ -13,8 +13,6 @@ import javax.servlet.http.{HttpServlet, HttpServletRequest, HttpServletResponse}
 
 import scala.collection.Seq
 
-
-
 class ScalaTest extends JUnitSuite {
   @Before
   def startUp() {
