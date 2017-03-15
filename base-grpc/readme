@@ -13,3 +13,6 @@ export CXXFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib"
 org.base.grpc.SimpleServer<->org.base.grpc.SimpleClient
 io.grpc.examples.routeguide.RouteGuideServer<->io.grpc.examples.routeguide.RouteGuideClient
 client/server need to be written.
+
+java -classpath lib/*:base-grpc/target/base-grpc-1.0-SNAPSHOT.jar org.base.grpc.SimpleServer
+java -classpath lib/*:base-grpc/target/base-grpc-1.0-SNAPSHOT.jar org.base.grpc.SimpleClient

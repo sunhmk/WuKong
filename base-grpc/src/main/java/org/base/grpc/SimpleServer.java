@@ -75,7 +75,28 @@ public class SimpleServer {
         @Override
         public io.grpc.stub.StreamObserver<io.grpc.examples.helloworld.HelloRequest> lotsOfGreetings(
                 io.grpc.stub.StreamObserver<io.grpc.examples.helloworld.HelloReply> responseObserver) {
-        	return null;
+        	return new io.grpc.stub.StreamObserver<io.grpc.examples.helloworld.HelloRequest>(){
+        		String str = "";
+        		int i = 0;
+        		@Override
+				public void onNext(HelloRequest value){
+        			str += " LotsOfGreetings";
+        			str += value.getName();
+        			str += i;
+        			str += "\r\n";
+        			i++;
+        		}
+        		@Override
+                public void onError(Throwable t) {
+        		}
+        		
+        		@Override
+                public void onCompleted() {
+        		  HelloReply reply = HelloReply.newBuilder().setMessage(str).build();
+        		  responseObserver.onNext(reply);
+                  responseObserver.onCompleted();
+                }
+        	};
         }
         
         //  
@@ -95,7 +116,28 @@ public class SimpleServer {
         @Override
         public io.grpc.stub.StreamObserver<io.grpc.examples.helloworld.HelloRequest> bidiHello(
                 io.grpc.stub.StreamObserver<io.grpc.examples.helloworld.HelloReply> responseObserver) {
-              return null;
+              return new io.grpc.stub.StreamObserver<io.grpc.examples.helloworld.HelloRequest>(){
+            	int i = 0;
+				@Override
+				public void onNext(HelloRequest value) {
+					// TODO Auto-generated method stub
+					responseObserver.onNext(HelloReply.newBuilder().setMessage("bidiHello " + i + value.getName()).build());
+					i++;
+				}
+
+				@Override
+				public void onError(Throwable t) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onCompleted() {
+					// TODO Auto-generated method stub
+					responseObserver.onCompleted();
+				}
+            	  
+              };
         }
       }
 }

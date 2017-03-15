@@ -67,7 +67,8 @@
 								<pathconvert pathsep=" " property="proto.files"
 									refid="proto.path" />
 								<exec executable="protoc">
-									<arg value="--plugin=protoc-gen-grpc-java=/Users/sunanan/Downloads/grpc-java-master/compiler/build/exe/java_plugin/protoc-gen-grpc-java" />
+									<arg
+										value="--plugin=protoc-gen-grpc-java=/Users/sunanan/Downloads/grpc-java-master/compiler/build/exe/java_plugin/protoc-gen-grpc-java" />
 									<arg value="--grpc-java_out=${basedir}/src/main/java" />
 									<arg value="--java_out=${basedir}/src/main/java" />
 									<arg value="-I${project.basedir}/src/main/protobuf" />
@@ -132,6 +133,10 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.google.protobuf</groupId>

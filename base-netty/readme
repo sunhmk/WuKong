@@ -1,3 +1,12 @@
 this module depends on base-pb.
 implements pb RPC.
-in spark ,hbase,hadoop,
+in spark ,hbase,hadoop,es,grpc,open-tsdb and son on
+grpc:
+startup->
+erverBuilder.forPort(port)
+        .addService(new GreeterImpl())
+        .build()
+        .start() 
+ServiceLoader.load
+io.grpc.netty.NettyServerProvider
+transfer data
