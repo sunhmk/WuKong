@@ -16,3 +16,41 @@ client/server need to be written.
 
 java -classpath lib/*:base-grpc/target/base-grpc-1.0-SNAPSHOT.jar org.base.grpc.SimpleServer
 java -classpath lib/*:base-grpc/target/base-grpc-1.0-SNAPSHOT.jar org.base.grpc.SimpleClient
+
+XmlFormat]，proto to xml
+
+Message someProto = SomeProto.getDefaultInstance();
+XmlFormat xmlFormat = new XmlFormat();
+String asXml = xmlFormat.printToString(someProto);
+[XmlFormat]，xml to proto
+
+Message.Builder builder = SomeProto.newBuilder();
+String asXml = _load xml document from a source_;
+XmlFormat xmlFormat = new XmlFormat();
+xmlFormat.merge(asXml, builder);
+[JsonFormat]，proto to json
+
+Message someProto = SomeProto.getDefaultInstance();
+JsonFormat jsonFormat = new JsonFormat();
+String asJson = jsonFormat.printToString(someProto);
+[JsonFormat]，json to proto
+
+Message.Builder builder = SomeProto.newBuilder();
+String asJson = _load json document from a source_;
+JsonFormat jsonFormat = new JsonFormat();
+jsonFormat.merge(asJson, builder);
+[HtmlFormat]，proto to html
+
+Message someProto = SomeProto.getDefaultInstance();
+HtmlFormat htmlFormat = new HtmlFormat();
+String asHtml = htmlFormat.printToString(someProto);
+
+
+grpc is fit for small data.if data is large,spilt it into small data.
+it usually should be less 1M,but larger also could.
+grpc client starts up:
+first, initiates nettyhandler by loading serverload;
+second,initiate delayedclienttransport and wait until the next step is ok.
+third,initiate dnsnameresolver->subchannel->nettytransportfactory
+fourth,second senddata by third action. 
+  

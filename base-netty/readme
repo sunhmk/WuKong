@@ -1,12 +1,29 @@
 this module depends on base-pb.
 implements pb RPC.
 in spark ,hbase,hadoop,es,grpc,open-tsdb and son on
+//JBoss Microcontainer, OSGi, Guice以及Spring
+
 grpc:
-startup->
+server startup->
 erverBuilder.forPort(port)
         .addService(new GreeterImpl())
         .build()
         .start() 
-ServiceLoader.load
-io.grpc.netty.NettyServerProvider
-transfer data
+ServiceLoader.load-》io.grpc.netty.NettyServerProvider-》NettyServer->start NettyNetty->init channel by ServerTransport 
+with http2.
+client startup->
+ManagedChannel channel;
+private final GreeterGrpc.GreeterBlockingStub blockingStub;
+private final GreeterGrpc.GreeterStub asyncStub;
+channel = ManagedChannelBuilder.forAddress(host, port)
+        // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
+        // needing certificates.
+        .usePlaintext(true)
+        .build();
+blockingStub = GreeterGrpc.newBlockingStub(channel);
+asyncStub = GreeterGrpc.newStub(channel);
+ServiceLoader.load(ManagedChannelProvider.class, classLoader)->io.grpc.ManagedChannelProvider(grpc-netty.jar/grpc-okhhtp.jar->meta-inf->services)
+->io.grpc.netty.NettyChannelProvider/io.grpc.okhttp.OkHttpChannelProvider
+
+     
+        

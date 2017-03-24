@@ -758,7 +758,9 @@
 		<module>base-jetty</module>
 		<module>base-netty</module>
 		<module>base-grpc</module>
+		<module>base-thread</module>
 		<module>wukong-assembly</module>
+		<module>base-utils</module>
 	</modules>
 	<profiles>
 		<profile>
