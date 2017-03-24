@@ -8,7 +8,7 @@
 		<artifactId>WuKong</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<!-- groupId>com.sun</groupId -->
 	<artifactId>base-netty</artifactId>
 	<version>1.0-SNAPSHOT</version>
@@ -74,5 +74,7 @@
 			<version>1.3.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-
+	<modules>
+	<module>base-utils</module>
+	</modules>
 </project>
