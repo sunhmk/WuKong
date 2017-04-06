@@ -8,7 +8,7 @@
 		<artifactId>WuKong</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<groupId>com.sun</groupId>
 	<artifactId>base-thread</artifactId>
 	<version>1.0-SNAPSHOT</version>
@@ -95,7 +95,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<modules>
-		<module>base-utils</module>
-	</modules>
 </project>

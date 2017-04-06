@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sun</groupId>
 	<artifactId>WuKong</artifactId>
@@ -754,11 +755,13 @@
 		</dependencies>
 	</dependencyManagement>
 	<modules>
+		<module>base-utils</module>
+		<module>base-io</module>
+		<module>base-thread</module>
 		<module>base-pb</module>
 		<module>base-jetty</module>
 		<module>base-netty</module>
 		<module>base-grpc</module>
-		<module>base-thread</module>
 		<module>wukong-assembly</module>
 	</modules>
 	<profiles>

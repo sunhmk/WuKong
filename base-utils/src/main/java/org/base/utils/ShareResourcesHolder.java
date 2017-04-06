@@ -56,7 +56,7 @@ public class ShareResourcesHolder {
 			instance.destroyTask = null;
 		}
 		instance.refcount ++;
-		return (T) instances.get(rs);
+		return (T) instance.payload;
 	}
 
 	private synchronized <T> T releaseInternal(final Resource<T>rs, final T instance)

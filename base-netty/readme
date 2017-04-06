@@ -25,5 +25,24 @@ asyncStub = GreeterGrpc.newStub(channel);
 ServiceLoader.load(ManagedChannelProvider.class, classLoader)->io.grpc.ManagedChannelProvider(grpc-netty.jar/grpc-okhhtp.jar->meta-inf->services)
 ->io.grpc.netty.NettyChannelProvider/io.grpc.okhttp.OkHttpChannelProvider
 
+start NettyServerImpl:
+Http2Settings settings = new Http2Settings();
+		settings.initialWindowSize(Integer.MAX_VALUE);//flowControlWindow);
+send a small file:nghttp -d "/work/code/pic/1.jpg" -v http://localhost:8080
+Http2Settings settings = new Http2Settings();
+		settings.initialWindowSize(Integer.MAX_VALUE);//flowControlWindow);
+send a large file:
+(mac)>ls -l
+-rwxrwxrwx@   1 ***  staff  1215004505  3  4 08:02 movie.mkv
+nghttp -d "/Users/sunanan/Downloads/movie.mkv" -v http://localhost:8080
+...
+[  6.079] send DATA frame <length=16384, flags=0x00, stream_id=13>
+[  6.079] send DATA frame <length=16384, flags=0x00, stream_id=13>
+[  6.079] send DATA frame <length=16384, flags=0x00, stream_id=13>
+[  6.079] send DATA frame <length=16384, flags=0x00, stream_id=13>
+[  6.079] send DATA frame <length=16218, flags=0x01, stream_id=13>
+          ; END_STREAM        
+
+
      
         
