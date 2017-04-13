@@ -42,7 +42,6 @@ import io.netty.channel.ServerChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.example.discard.DiscardClientHandler;
 import io.netty.util.AsciiString;
 
 public class NettyClientTransport {
@@ -110,7 +109,7 @@ public class NettyClientTransport {
 					.setAutoWindow((AbstractNettyHttp2Handler) channelHandler);
 		}
 
-		Class cla = null;
+		Class<?> cla = null;
 		try {
 			cla = Class
 					.forName("io.grpc.netty.ProtocolNegotiators$BufferUntilChannelActiveHandler");

@@ -1,0 +1,175 @@
+LinkedBlockingQueue:FIFO
+LinkedBlockingQueue:Blocked,usually used for productor/consumer, ConcurrentLinkedQueue:nonblocked
+//hbase-replication.java -199
+// PriorityBlockingQueue<Path> queue=...;
+// queue = new PriorityBlockingQueue<Path>(queueSizePerGroup, new LogsComparator());
+// queues.put(logPrefix, queue);
+PriorityBlockingQueue
+//hbase StealJobQueue.java
+BlockingQueue<T> stealFromQueue = new PriorityBlockingQueue<T>() {
+      @Override
+      public boolean offer(T t) {
+        lock.lock();
+        try {
+          notEmpty.signal();
+          return super.offer(t);
+        } finally {
+          lock.unlock();
+        }
+      }
+    };
+   //CompactSplitThread.java 
+    StealJobQueue<Runnable> stealJobQueue = new StealJobQueue<>();
+    this.longCompactions = new ThreadPoolExecutor(largeThreads, largeThreads,
+        60, TimeUnit.SECONDS, stealJobQueue,
+        new ThreadFactory() {
+          @Override
+          public Thread newThread(Runnable r) {
+            Thread t = new Thread(r);
+            t.setName(n + "-longCompactions-" + System.currentTimeMillis());
+            return t;
+          }
+      });
+    this.longCompactions.setRejectedExecutionHandler(new Rejection());
+    this.longCompactions.prestartAllCoreThreads();
+    this.shortCompactions = new ThreadPoolExecutor(smallThreads, smallThreads,
+        60, TimeUnit.SECONDS, stealJobQueue.getStealFromQueue(),
+        new ThreadFactory() {
+          @Override
+          public Thread newThread(Runnable r) {
+            Thread t = new Thread(r);
+            t.setName(n + "-shortCompactions-" + System.currentTimeMillis());
+            return t;
+          }
+      });
+    this.shortCompactions
+        .setRejectedExecutionHandler(new Rejection());
+    this.splits = (ThreadPoolExecutor)
+        Executors.newFixedThreadPool(splitThreads,
+            new ThreadFactory() {
+          @Override
+          public Thread newThread(Runnable r) {
+            Thread t = new Thread(r);
+            t.setName(n + "-splits-" + System.currentTimeMillis());
+            return t;
+          }
+      });
+    int mergeThreads = conf.getInt(MERGE_THREADS, MERGE_THREADS_DEFAULT);
+    this.mergePool = (ThreadPoolExecutor) Executors.newFixedThreadPool(
+        mergeThreads, new ThreadFactory() {
+          @Override
+          public Thread newThread(Runnable r) {
+            Thread t = new Thread(r);
+            t.setName(n + "-merges-" + System.currentTimeMillis());
+            return t;
+          }
+        });
+   //hbase MobUtils.java.only one thread can run.   
+    final SynchronousQueue<Runnable> queue = new SynchronousQueue<Runnable>();
+    ThreadPoolExecutor pool = new ThreadPoolExecutor(1, maxThreads, 60, TimeUnit.SECONDS, queue,
+      Threads.newDaemonThreadFactory("MobCompactor"), new RejectedExecutionHandler() {
+        @Override
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+          try {
+            // waiting for a thread to pick up instead of throwing exceptions.
+            queue.put(r);
+          } catch (InterruptedException e) {
+            throw new RejectedExecutionException(e);
+          }
+        }
+      });
+    ((ThreadPoolExecutor) pool).allowCoreThreadTimeOut(true);
+    
+    //BlockingDeque double ended queue.for example, one thread consume and product from the same queue.
+    BlockingDeque<String> deque = new LinkedBlockingDeque<String>();  
+  
+deque.addFirst("1");  
+deque.addLast("2");  
+  
+String two = deque.takeLast();  
+String one = deque.takeFirst(); 
+//LinkedBlockingDeque double queued list
+deque.addFirst("1");  
+deque.addLast("2");  
+  
+String two = deque.takeLast();  
+String one = deque.takeFirst();  
+//ConcurrentMap-only lock the writing block.
+ConcurrentMap concurrentMap = new ConcurrentHashMap();  
+  
+concurrentMap.put("key", "value");  
+  
+Object value = concurrentMap.get("key");  
+//protected final ConcurrentMap<String, Timer> rpcTimers =
+      new ConcurrentHashMap<>(CAPACITY, LOAD_FACTOR, CONCURRENCY_LEVEL);
+//ConcurrentHashMap hbase -- QuotaCache.java
+private <K, V extends QuotaState> void fetch(final String type,
+        final ConcurrentHashMap<K, V> quotasMap, final Fetcher<K, V> fetcher) {
+      long now = EnvironmentEdgeManager.currentTime();
+      long refreshPeriod = getPeriod();
+      long evictPeriod = refreshPeriod * EVICT_PERIOD_FACTOR;
+
+      // Find the quota entries to update
+      List<Get> gets = new ArrayList<Get>();
+      List<K> toRemove = new ArrayList<K>();
+      for (Map.Entry<K, V> entry: quotasMap.entrySet()) {
+        long lastUpdate = entry.getValue().getLastUpdate();
+        long lastQuery = entry.getValue().getLastQuery();
+        if (lastQuery > 0 && (now - lastQuery) >= evictPeriod) {
+          toRemove.add(entry.getKey());
+        } else if (TEST_FORCE_REFRESH || (now - lastUpdate) >= refreshPeriod) {
+          gets.add(fetcher.makeGet(entry));
+        }
+      }
+
+      for (final K key: toRemove) {
+        if (LOG.isTraceEnabled()) {
+          LOG.trace("evict " + type + " key=" + key);
+        }
+        quotasMap.remove(key);
+      }
+
+      // fetch and update the quota entries
+      if (!gets.isEmpty()) {
+        try {
+          for (Map.Entry<K, V> entry: fetcher.fetchEntries(gets).entrySet()) {
+            V quotaInfo = quotasMap.putIfAbsent(entry.getKey(), entry.getValue());
+            if (quotaInfo != null) {
+              quotaInfo.update(entry.getValue());
+            }
+
+            if (LOG.isTraceEnabled()) {
+              LOG.trace("refresh " + type + " key=" + entry.getKey() + " quotas=" + quotaInfo);
+            }
+          }
+        } catch (IOException e) {
+          LOG.warn("Unable to read " + type + " from quota table", e);
+        }
+      }
+    }
+  }
+  
+  //ConcurrentNavigableMap --can return submap
+  ConcurrentNavigableMap map = new ConcurrentSkipListMap();  
+  
+map.put("1", "one");  
+map.put("2", "two");  
+map.put("3", "three");  
+  
+ConcurrentNavigableMap headMap = map.headMap("2");  
+//hbase MultiThreadedClientExample.java
+ExecutorService service = new ForkJoinPool(threads * 2);
+
+    // Create two different connections showing how it's possible to
+    // separate different types of requests onto different connections
+    final Connection writeConnection = ConnectionFactory.createConnection(getConf(), service);
+//ReentrantReadWriteLock
+private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+lock.writeLock().lock();// Lock l =lock.writeLock()
+lock.writeLock().unlock();
+lock.readLock().lock();
+lock.readLock().unlock();
+//hbase HRegion.java
+public RowLock getRowLock(byte[] row, boolean readLock) throws IOException {
+
+

@@ -16,28 +16,34 @@
 
 package io.netty.example.file;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultFileRegion;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedFile;
+import io.netty.util.CharsetUtil;
 
 import java.io.RandomAccessFile;
+import java.lang.reflect.Method;
 
-public class FileServerHandler extends SimpleChannelInboundHandler<String> {
+public class FileServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        ctx.writeAndFlush("HELO: Type the path of the file to retrieve.\n");
+        ctx.writeAndFlush(Unpooled.wrappedBuffer("HELO: Type the path of the file to retrieve.\n".getBytes()));
     }
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+    public void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         RandomAccessFile raf = null;
         long length = -1;
         try {
-            raf = new RandomAccessFile(msg, "r");
+        	String path = msg.toString(CharsetUtil.UTF_8);
+            raf = new RandomAccessFile(path, "r");
             length = raf.length();
         } catch (Exception e) {
             ctx.writeAndFlush("ERR: " + e.getClass().getSimpleName() + ": " + e.getMessage() + '\n');
@@ -48,15 +54,15 @@ public class FileServerHandler extends SimpleChannelInboundHandler<String> {
             }
         }
 
-        ctx.write("OK: " + raf.length() + '\n');
-        if (ctx.pipeline().get(SslHandler.class) == null) {
+       // ctx.write("OK: " + raf.length() + '\n');
+        //if (ctx.pipeline().get(SslHandler.class) == null) {
             // SSL not enabled - can use zero-copy file transfer.
-            ctx.write(new DefaultFileRegion(raf.getChannel(), 0, length));
-        } else {
+       //     ctx.write(new DefaultFileRegion(raf.getChannel(), 0, length));
+       // } else {
             // SSL enabled - cannot use zero-copy file transfer.
-            ctx.write(new ChunkedFile(raf));
-        }
-        ctx.writeAndFlush("\n");
+            ctx.writeAndFlush(new ChunkedFile(raf));
+      //  }
+        //ctx.writeAndFlush("\n");
     }
 
     @Override

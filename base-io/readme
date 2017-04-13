@@ -1,0 +1,4 @@
+hadoop ftp:
+org.apache.hadoop.fs.ftp.FTPFileSystem.java
+hadoop sftp
+SFTPFileSystem

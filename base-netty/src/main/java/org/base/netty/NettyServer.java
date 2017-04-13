@@ -27,7 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class NettyServer {
-	public enum ProtocolType {
+	public static enum ProtocolType {
 		HTTP("http"), HTTP2("http2"), SOCKET("socket"), FTP("ftp");
 		private String Protocol = "http";
 

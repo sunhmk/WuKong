@@ -71,9 +71,9 @@ public final class FileServer {
                          p.addLast(sslCtx.newHandler(ch.alloc()));
                      }
                      p.addLast(
-                             new StringEncoder(CharsetUtil.UTF_8),
-                             new LineBasedFrameDecoder(8192),
-                             new StringDecoder(CharsetUtil.UTF_8),
+                             //new StringEncoder(CharsetUtil.UTF_8),
+                             //new LineBasedFrameDecoder(8192),
+                            // new StringDecoder(CharsetUtil.UTF_8),
                              new ChunkedWriteHandler(),
                              new FileServerHandler());
                  }
