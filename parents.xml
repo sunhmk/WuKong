@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sun</groupId>
 	<artifactId>WuKong</artifactId>
@@ -14,6 +15,11 @@
 		<java.version>1.8</java.version>
 		<scala.version>2.11.8</scala.version>
 		<scala.binary.version>2.11</scala.binary.version>
+
+		<javaxservlet.version>3.1.0</javaxservlet.version>
+		<jetty.version>9.4.2.v20170220</jetty.version>
+		<!-- Package to use when relocating shaded classes. -->
+		<wukong.shade.packageName>org.wukong_project</wukong.shade.packageName>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<PermGen>64m</PermGen>
@@ -23,6 +29,8 @@
 		<test.exclude.tags></test.exclude.tags>
 		<maven-antrun.version>1.8</maven-antrun.version>
 		<build.testJarPhase>prepare-package</build.testJarPhase>
+		<maven.assembly.version>2.6</maven.assembly.version>
+		<jars.target.dir>${project.build.directory}/scala-${scala.binary.version}/jars</jars.target.dir>
 	</properties>
 	<developers>
 		<developer>
@@ -33,9 +41,28 @@
 	</developers>
 	<dependencies>
 		<dependency>
+			<groupId>org.spark-project.spark</groupId>
+			<artifactId>unused</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!-- This is needed by the scalatest plugin, and so is declared here to 
+			be available in all child modules, just as scalatest is run in all children -->
+		<dependency>
+			<groupId>org.scalatest</groupId>
+			<artifactId>scalatest_${scala.binary.version}</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.novocode</groupId>
+			<artifactId>junit-interface</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 	<repositories>
 		<repository>
@@ -91,13 +118,14 @@
 						</execution>
 					</executions>
 				</plugin>
-				<!-- 多源码制定 -->
+				<!-- 多源码制定:添加额外的源码 -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
 					<version>1.10</version>
 				</plugin>
-				<!-- scala运行 -->
+				<!-- scala:is used for compiling/testing/running/documenting scala code 
+					of any maven project. -->
 				<plugin>
 					<groupId>net.alchim31.maven</groupId>
 					<artifactId>scala-maven-plugin</artifactId>
@@ -228,9 +256,11 @@
 					<configuration>
 						<reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
 						<junitxml>.</junitxml>
-						<filereports>SparkTestSuite.txt</filereports>
-						<argLine>-ea -Xmx3g -XX:MaxPermSize=${MaxPermGen}
-							-XX:ReservedCodeCacheSize=${CodeCacheSize}</argLine>
+						<filereports>basejettyTestSuite.txt</filereports>
+						<argLine>
+							-ea -Xmx3g -XX:MaxPermSize=${MaxPermGen}
+							<!-- -XX:ReservedCodeCacheSize=${CodeCacheSize} -->
+						</argLine>
 						<stderr />
 						<environmentVariables>
 							<!-- Setting SPARK_DIST_CLASSPATH is a simple way to make sure any 
@@ -402,6 +432,11 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.5.1</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -464,14 +499,14 @@
 					<relocations>
 						<relocation>
 							<pattern>org.eclipse.jetty</pattern>
-							<shadedPattern>${spark.shade.packageName}.jetty</shadedPattern>
+							<shadedPattern>${wukong.shade.packageName}.jetty</shadedPattern>
 							<includes>
 								<include>org.eclipse.jetty.**</include>
 							</includes>
 						</relocation>
 						<relocation>
 							<pattern>com.google.common</pattern>
-							<shadedPattern>${spark.shade.packageName}.guava</shadedPattern>
+							<shadedPattern>${wukong.shade.packageName}.guava</shadedPattern>
 						</relocation>
 					</relocations>
 				</configuration>
@@ -502,7 +537,7 @@
 				<version>0.8.0</version>
 				<configuration>
 					<verbose>false</verbose>
-					<failOnViolation>true</failOnViolation>
+					<failOnViolation>false</failOnViolation>
 					<includeTestSourceDirectory>false</includeTestSourceDirectory>
 					<failOnWarning>false</failOnWarning>
 					<sourceDirectory>${basedir}/src/main/scala</sourceDirectory>
@@ -603,21 +638,173 @@
 				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>com.novocode</groupId>
+				<artifactId>junit-interface</artifactId>
+				<version>0.11</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${javaxservlet.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.scalacheck</groupId>
+				<artifactId>scalacheck_${scala.binary.version}</artifactId>
+				<version>1.12.5</version> <!-- 1.13.0 appears incompatible with scalatest 2.2.6 -->
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-http</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-continuation</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-servlet</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-servlets</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-proxy</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-client</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-util</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-security</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-plus</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-server</artifactId>
+				<version>${jetty.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.scala-lang</groupId>
+				<artifactId>scala-compiler</artifactId>
+				<version>${scala.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.scala-lang</groupId>
+				<artifactId>scala-reflect</artifactId>
+				<version>${scala.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.scala-lang</groupId>
+				<artifactId>scala-library</artifactId>
+				<version>${scala.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.scala-lang</groupId>
+				<artifactId>scala-actors</artifactId>
+				<version>${scala.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.scala-lang</groupId>
+				<artifactId>scalap</artifactId>
+				<version>${scala.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.scalatest</groupId>
+				<artifactId>scalatest_${scala.binary.version}</artifactId>
+				<version>2.2.6</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>21.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<modules>
+		<module>base-utils</module>
+		<module>base-io</module>
+		<module>base-thread</module>
+		<module>base-pb</module>
 		<module>base-jetty</module>
 		<module>base-netty</module>
+		<module>base-grpc</module>
+		<module>wukong-assembly</module>
 	</modules>
-	<!-- profiles>
+	<profiles>
 		<profile>
-			<id>java8-tests</id>
+			<id>scala-2.11</id>
 			<activation>
-				<jdk>[1.8,)</jdk>
+				<property>
+					<name>!scala-2.10</name>
+				</property>
 			</activation>
-			<modules>
-				<module>external/java8-tests</module>
-			</modules>
+			<properties>
+				<scala.version>2.11.8</scala.version>
+				<scala.binary.version>2.11</scala.binary.version>
+				<jline.version>2.12.1</jline.version>
+				<jline.groupid>jline</jline.groupid>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>enforce-versions</id>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+								<configuration>
+									<rules>
+										<bannedDependencies>
+											<excludes combine.children="append">
+												<exclude>*:*_2.10</exclude>
+											</excludes>
+										</bannedDependencies>
+									</rules>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
-	</profiles> -->
+		<!-- profile> <id>java8-tests</id> <activation> <jdk>[1.8,)</jdk> </activation> 
+			<modules> <module>external/java8-tests</module> </modules> </profile -->
+	</profiles>
 </project>

@@ -7,6 +7,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilterOutputStream;
 
 public class FileStreamExample {
 	public static void main(String[] args) throws Exception {
@@ -46,5 +47,7 @@ public class FileStreamExample {
         } catch (Exception e) {
 
         }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        FilterOutputStream stream = new FilterOutputStream(baos);
 	}
 }
