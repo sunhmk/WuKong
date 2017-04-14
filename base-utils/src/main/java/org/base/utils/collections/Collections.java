@@ -18,6 +18,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -25,6 +26,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
+import com.google.common.collect.MutableClassToInstanceMap;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
 import com.google.common.primitives.Ints;
@@ -212,5 +214,13 @@ public class Collections {
 		// 只保留数字和小写字母
 		 * 
 		 */
+			//是class与实例map
+		   final ClassToInstanceMap<Myclass> interfaceToProxyCache;
+		   interfaceToProxyCache = MutableClassToInstanceMap.create();
+		   interfaceToProxyCache.putInstance(Myclass.class, new Myclass());
+		
+	}
+	public static class Myclass{
+		
 	}
 }

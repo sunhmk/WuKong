@@ -763,6 +763,9 @@
 		<module>base-netty</module>
 		<module>base-grpc</module>
 		<module>wukong-assembly</module>
+		<module>base-annotation</module>
+		<module>base-proxy</module>
+		<module>base-reflection</module>
 	</modules>
 	<profiles>
 		<profile>
