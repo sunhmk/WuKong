@@ -766,6 +766,7 @@
 		<module>base-annotation</module>
 		<module>base-proxy</module>
 		<module>base-reflection</module>
+		<module>base-log</module>
 	</modules>
 	<profiles>
 		<profile>
