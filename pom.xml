@@ -767,6 +767,7 @@
 		<module>base-proxy</module>
 		<module>base-reflection</module>
 		<module>base-log</module>
+		<module>base-commonspool</module>
 	</modules>
 	<profiles>
 		<profile>
