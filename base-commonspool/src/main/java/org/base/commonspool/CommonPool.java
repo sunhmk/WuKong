@@ -192,7 +192,6 @@ public class CommonPool {
      * @param args 
      */  
     public static void main(String[] args) {  
-  
     	CommonPool pool = new CommonPool();
     	@SuppressWarnings("unused")
 		Class<?>[]csz = pool.getClass().getClasses();

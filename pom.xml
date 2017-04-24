@@ -768,6 +768,7 @@
 		<module>base-reflection</module>
 		<module>base-log</module>
 		<module>base-commonspool</module>
+		<module>base-cache</module>
 	</modules>
 	<profiles>
 		<profile>
