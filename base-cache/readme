@@ -1,0 +1,12 @@
+jgroups:
+network-tcp.xml/network-udp.xml
+bind_addr is neccessary.
+This is an article on placing a task into a grid (cluster) where it is picked up and processed by a worker, based on a deterministic algorithm.
+http://www.jgroups.org/taskdistribution.html
+
+ehcache three tiers:
+1、 OnHeapStore:ConcurrentHashMap redefined by ehcache。new initTable ->(Node<K,V>[])new Node<?,?>[n],dynamically increase
+2、 OffHeapStore:first alocate a list of bytebuffer by OffHeapBufferSource->ByteBuffer.allocateDirect(size). then when used, 
+    use the allocated buffer,and record in aatreeset.a buffer can be used by mutile block.for example, a 100 bytebuffer,40 
+    for one ,60 for another.OffHeapStorageArea manages allocated bytebuffer,and reflects to pages. 
+3、 OffHeapDiskStore
