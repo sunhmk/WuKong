@@ -10,3 +10,25 @@ ehcache three tiers:
     use the allocated buffer,and record in aatreeset.a buffer can be used by mutile block.for example, a 100 bytebuffer,40 
     for one ,60 for another.OffHeapStorageArea manages allocated bytebuffer,and reflects to pages. 
 3、 OffHeapDiskStore
+
+
+org.base.spark -from opensource spark project
+1、create MemoryBlock by new (heap) or unsafe
+HeapMemoryAllocator.java-allocate bytes by new on heap.when released by free, it will be add to weakrefrence list that can be finanlized by JVM GC.
+ when allocate heaps , it will firstly search from that list.
+UnsafeMemoryAllocator- unsafe allocate bytes.
+2、LongArray-read or write long on index from a MemoryBlock.
+
+estimate class size-hbase 
+BlockCacheKey-hbase example.
+BucketCache.java 
+    if (ioEngineName.startsWith("file:"))
+      return new FileIOEngine(ioEngineName.substring(5), capacity); //read/write byte to file by filechannel
+    else if (ioEngineName.startsWith("offheap"))//offheap ByteBuffer.allocateDirect(bufferSize)
+      return new ByteBufferIOEngine(capacity, true);
+    else if (ioEngineName.startsWith("heap"))//heap ByteBuffer.allocate(bufferSize);
+      return new ByteBufferIOEngine(capacity, false);
+    else
+      throw new IllegalArgumentException(
+          "Don't understand io engine name for cache - prefix with file:, heap or offheap");
+

@@ -17,6 +17,36 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<repositories>
+		<dependency>
+			<groupId>org.scalacheck</groupId>
+			<artifactId>scalacheck_${scala.binary.version}</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-compiler</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-reflect</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-actors</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scalap</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
 		<repository>
 			<id>terracotta-repository</id>
 			<url>http://www.terracotta.org/download/reflector/releases</url>
@@ -33,12 +63,6 @@
 		</repository>
 	</repositories>
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -77,5 +101,87 @@
 			<artifactId>jsr305</artifactId>
 			<version>3.0.2</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>22.0-rc1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>2.7.2</version>
+		</dependency>
 	</dependencies>
+	<build>
+		<outputDirectory>target/scala-${scala.binary.version}/classes</outputDirectory>
+		<testOutputDirectory>target/scala-${scala.binary.version}/test-classes</testOutputDirectory>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+			</resource>
+			<resource>
+				<!-- Include the properties file to provide the build information. -->
+				<directory>${project.build.directory}/extra-resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<configuration>
+							<!-- Execute the shell script to generate the spark build information. -->
+							<target>
+								<exec executable="bash">
+									<arg value="${project.basedir}/../build/spark-build-info" />
+									<arg value="${project.build.directory}/extra-resources" />
+									<arg value="${project.version}" />
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<!-- When using SPARK_PREPEND_CLASSES Spark classes compiled locally 
+						don't use shaded deps. So here we store jars in their original form which 
+						are added when the classpath is computed. -->
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+							<useSubDirectoryPerType>true</useSubDirectoryPerType>
+							<includeArtifactIds>
+								javax.servlet-api,scala-compiler,scala-reflect,scala-library,
+								scala-actors,scalap,scalatest_${scala.binary.version},guava,jetty-io,jetty-servlet,jetty-servlets,jetty-continuation,jetty-http,jetty-plus,jetty-util,jetty-server,jetty-security,jetty-proxy,jetty-client
+							</includeArtifactIds>
+							<silent>true</silent>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
