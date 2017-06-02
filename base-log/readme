@@ -1,5 +1,5 @@
 opentsdb/src/logback.xml
-
+ maven 编译下将scala注释掉，
 ref http://www.cnblogs.com/warking/p/5710303.html
 一、logback的介绍
 　　Logback是由log4j创始人设计的另一个开源日志组件,官方网站： http://logback.qos.ch。它当前分为下面下个模块：

@@ -18,6 +18,6 @@ public class Log4jExample {
         logger.info("This is info message.");  
         // 记录error级别的信息  
         logger.error("This is error message.");  
-        logger.log(Priority.DEBUG, "Testing a log message use a alternate form");
+        logger.log(Level.DEBUG, "Testing a log message use a alternate form");
     }  
 }

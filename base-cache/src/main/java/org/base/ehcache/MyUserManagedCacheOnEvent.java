@@ -20,13 +20,22 @@ public class MyUserManagedCacheOnEvent {
 			System.out.println("type= " + event.getType().toString() + "key:" + event.getKey() + "  oldvalue:"+event.getOldValue() + "newValue:" + event.getNewValue());
 		}
 	}
+	public static class MyCacheEventListener2 implements CacheEventListener<Object, Object>
+	{
+		@Override
+		public void onEvent(CacheEvent<? extends Object, ? extends Object> event) {
+			// TODO Auto-generated method stub
+			System.out.println("type= " + event.getType().toString() + "key:" + event.getKey() + "  oldvalue:"+event.getOldValue() + "newValue:" + event.getNewValue());
+
+		}
+	}
 	public static void main(String[]args)
 	{
-		EventType [] types = {EventType.UPDATED};
+		//EventType [] types = {EventType.UPDATED};
 		UserManagedCache<Long, String> cache = UserManagedCacheBuilder.newUserManagedCacheBuilder(Long.class, String.class)
 			    .withEventExecutors(Executors.newSingleThreadExecutor(), Executors.newFixedThreadPool(5)) 
 			    .withEventListeners(CacheEventListenerConfigurationBuilder
-			        .newEventListenerConfiguration((Class<? extends CacheEventListener<?,?>>)MyCacheEventListener.class, EventType.CREATED, EventType.UPDATED)
+			        .newEventListenerConfiguration(MyCacheEventListener2.class, EventType.CREATED, EventType.UPDATED)
 			        .asynchronous()
 			        .unordered()) 
 			    .withResourcePools(ResourcePoolsBuilder.newResourcePoolsBuilder()

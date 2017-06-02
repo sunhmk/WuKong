@@ -774,6 +774,9 @@
 		<module>base-commonspool</module>
 		<module>base-cache</module>
 		<module>base-solr</module>
+		<module>base-serialize</module>
+		<module>base-spring-mybatis</module>
+		<module>base-springmvc</module>
 	</modules>
 	<profiles>
 		<profile>
@@ -819,4 +822,4 @@
 			<modules> <module>external/java8-tests</module> </modules> </profile -->
 	</profiles>
 </project>
-</project>
+

@@ -17,6 +17,23 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<repositories>
+		<repository>
+			<id>terracotta-repository</id>
+			<url>http://www.terracotta.org/download/reflector/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>sourceforge</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<dependencies>
+
 		<dependency>
 			<groupId>org.scalacheck</groupId>
 			<artifactId>scalacheck_${scala.binary.version}</artifactId>
@@ -47,22 +64,6 @@
 			<artifactId>scalap</artifactId>
 			<version>${scala.version}</version>
 		</dependency>
-		<repository>
-			<id>terracotta-repository</id>
-			<url>http://www.terracotta.org/download/reflector/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>sourceforge</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<dependencies>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>

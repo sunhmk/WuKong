@@ -1,5 +1,5 @@
 package org.base.log
-import org.base.log.LoggerExample
+//import org.base.log.LoggerExample
 import org.slf4j.LoggerFactory
 import org.apache.log4j.{Level, LogManager, PropertyConfigurator}
 import org.slf4j.Logger

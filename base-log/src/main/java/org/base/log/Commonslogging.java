@@ -29,7 +29,7 @@ public class Commonslogging {
     	URLClassLoader classLoader = (URLClassLoader) classloader;//ClassLoader.getSystemClassLoader();
     	Method add = null;
 		try {
-			add = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
+			add = URLClassLoader.class.getDeclaredMethod("addURL", new Class<?>[]{URL.class});
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

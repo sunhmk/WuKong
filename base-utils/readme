@@ -1,0 +1,17 @@
+MinMaxPriorityQueue ->http://stackoverflow.com/questions/29363289/minmaxpriorityqueue-using-java-streams
+double distance(String word1, String word2){
+  ...
+}
+
+Collection<String> words = ...;
+String word = "...";
+
+words.stream()
+  .map(w -> new Pair<String, Double>(w, distance(word, w)))
+  .sorted()
+  .limit(n);
+  
+  best solution:
+  Queue<Pair<String, Double>> neighbours = MinMaxPriorityQueue.maximumSize(n).create();
+words.stream()
+  .forEach(w -> neighbours.add(new Pair<String, Double>(w, distance(word, w)));

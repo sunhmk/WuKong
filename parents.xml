@@ -62,7 +62,11 @@
 			<artifactId>junit-interface</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.2</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -766,6 +770,10 @@
 		<module>base-annotation</module>
 		<module>base-proxy</module>
 		<module>base-reflection</module>
+		<module>base-log</module>
+		<module>base-commonspool</module>
+		<module>base-cache</module>
+		<module>base-solr</module>
 	</modules>
 	<profiles>
 		<profile>
@@ -811,3 +819,4 @@
 			<modules> <module>external/java8-tests</module> </modules> </profile -->
 	</profiles>
 </project>
+
