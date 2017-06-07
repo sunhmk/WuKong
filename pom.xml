@@ -440,6 +440,68 @@
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.5.1</version>
 				</plugin>
+
+				<!-- The shade plug-in is used here to create effective pom's (see SPARK-3812), 
+					and also remove references from the shaded libraries from artifacts published 
+					by Spark. -->
+				<!--plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-shade-plugin</artifactId>
+					<configuration>
+						<shadedArtifactAttached>false</shadedArtifactAttached>
+						<artifactSet>
+							<includes>
+								<include>org.spark-project.spark:unused</include>
+								<include>org.eclipse.jetty:jetty-io</include>
+								<include>org.eclipse.jetty:jetty-http</include>
+								<include>org.eclipse.jetty:jetty-proxy</include>
+								<include>org.eclipse.jetty:jetty-client</include>
+								<include>org.eclipse.jetty:jetty-continuation</include>
+								<include>org.eclipse.jetty:jetty-servlet</include>
+								<include>org.eclipse.jetty:jetty-servlets</include>
+								<include>org.eclipse.jetty:jetty-plus</include>
+								<include>org.eclipse.jetty:jetty-security</include>
+								<include>org.eclipse.jetty:jetty-util</include>
+								<include>org.eclipse.jetty:jetty-server</include>
+								<include>com.google.guava:guava</include>
+							</includes>
+						</artifactSet>
+						<relocations>
+							<relocation>
+								<pattern>org.eclipse.jetty</pattern>
+								<shadedPattern>${wukong.shade.packageName}.jetty</shadedPattern>
+								<includes>
+									<include>org.eclipse.jetty.**</include>
+								</includes>
+							</relocation>
+							<relocation>
+								<pattern>com.google.common</pattern>
+								<shadedPattern>${wukong.shade.packageName}.guava</shadedPattern>
+							</relocation>
+						</relocations>
+					</configuration>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>shade</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin-->
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+				</plugin>
+				<plugin>
+					<groupId>net.alchim31.maven</groupId>
+					<artifactId>scala-maven-plugin</artifactId>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -474,66 +536,6 @@
 				</executions>
 			</plugin>
 
-			<!-- The shade plug-in is used here to create effective pom's (see SPARK-3812), 
-				and also remove references from the shaded libraries from artifacts published 
-				by Spark. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<configuration>
-					<shadedArtifactAttached>false</shadedArtifactAttached>
-					<artifactSet>
-						<includes>
-							<include>org.spark-project.spark:unused</include>
-							<include>org.eclipse.jetty:jetty-io</include>
-							<include>org.eclipse.jetty:jetty-http</include>
-							<include>org.eclipse.jetty:jetty-proxy</include>
-							<include>org.eclipse.jetty:jetty-client</include>
-							<include>org.eclipse.jetty:jetty-continuation</include>
-							<include>org.eclipse.jetty:jetty-servlet</include>
-							<include>org.eclipse.jetty:jetty-servlets</include>
-							<include>org.eclipse.jetty:jetty-plus</include>
-							<include>org.eclipse.jetty:jetty-security</include>
-							<include>org.eclipse.jetty:jetty-util</include>
-							<include>org.eclipse.jetty:jetty-server</include>
-							<include>com.google.guava:guava</include>
-						</includes>
-					</artifactSet>
-					<relocations>
-						<relocation>
-							<pattern>org.eclipse.jetty</pattern>
-							<shadedPattern>${wukong.shade.packageName}.jetty</shadedPattern>
-							<includes>
-								<include>org.eclipse.jetty.**</include>
-							</includes>
-						</relocation>
-						<relocation>
-							<pattern>com.google.common</pattern>
-							<shadedPattern>${wukong.shade.packageName}.guava</shadedPattern>
-						</relocation>
-					</relocations>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>net.alchim31.maven</groupId>
-				<artifactId>scala-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-			</plugin>
 			<plugin>
 				<groupId>org.scalastyle</groupId>
 				<artifactId>scalastyle-maven-plugin</artifactId>
@@ -659,80 +661,7 @@
 				<version>1.12.5</version> <!-- 1.13.0 appears incompatible with scalatest 2.2.6 -->
 				<scope>test</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-http</artifactId>
-				<version>${jetty.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-continuation</artifactId>
-				<version>${jetty.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-servlet</artifactId>
-				<version>${jetty.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-servlets</artifactId>
-				<version>${jetty.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-proxy</artifactId>
-				<version>${jetty.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-client</artifactId>
-				<version>${jetty.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-util</artifactId>
-				<version>${jetty.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-security</artifactId>
-				<version>${jetty.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-plus</artifactId>
-				<version>${jetty.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-server</artifactId>
-				<version>${jetty.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-webapp</artifactId>
-				<version>${jetty.version}</version>
-			</dependency>
-			<!-- 出错No JSP support. Check that JSP jars are in lib/jsp and that the 
-				JSP option has been specified to start.jar -->
-			<!-- dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-jsp-2.1</artifactId> 
-				<version>7.5.4.v20111024</version> </dependency> -->
-			<dependency>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jsp-2.1-glassfish</artifactId>
-				<version>2.1.v20100127</version>
-			</dependency>
+			
 			<dependency>
 				<groupId>org.scala-lang</groupId>
 				<artifactId>scala-compiler</artifactId>

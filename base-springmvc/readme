@@ -1,0 +1,1 @@
+when parent module contains different jetty versions,this module war would be lack of some jetty jars

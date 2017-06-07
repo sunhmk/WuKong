@@ -12,7 +12,7 @@
 	<packaging>war</packaging>
 	<name>base-springmvc Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-<properties>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jetty.version>9.2.10.v20150310</jetty.version>
 		<spring.version>4.1.6.RELEASE</spring.version>
@@ -99,6 +99,16 @@
 	<!-- 打包构建 -->
 	<build>
 		<finalName>base-springmvc</finalName>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+			</resource>
+			<resource>
+				<!-- Include the properties file to provide the build information. -->
+				<directory>${project.build.directory}/extra-resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -120,11 +130,15 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<tasks>
+								<dependencyfilesets prefix="mydeps." />
 								<copy todir="${project.build.directory}/${project.artifactId}/">
 									<fileset dir="${project.build.directory}/classes/">
 										<include name="**/*/Launcher.class" />
 									</fileset>
 								</copy>
+								<mkdir
+									dir="${project.build.directory}/${project.artifactId}/WEB-INF/lib" />
+
 							</tasks>
 						</configuration>
 						<goals>
@@ -133,7 +147,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -172,6 +185,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>

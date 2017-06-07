@@ -31,6 +31,7 @@ public class Launcher {
 	
 	public static void runJettyServer(int port, String contextPath) {
 		
+		System.out.println("test...");
 		Server server = createJettyServer(port, contextPath);
 		try {
 			server.start();
