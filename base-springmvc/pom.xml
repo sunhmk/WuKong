@@ -14,34 +14,67 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jetty.version>9.2.10.v20150310</jetty.version>
+		<base-jetty-version>9.4.5.v20170502</base-jetty-version>
 		<spring.version>4.1.6.RELEASE</spring.version>
 		<jackson.version>2.8.1</jackson.version>
 		<log4j.version>1.2.17</log4j.version>
 	</properties>
-
 	<dependencies>
-
-		<!-- jetty -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
-			<version>${jetty.version}</version>
-			<!-- <scope>provided</scope> -->
+			<artifactId>jetty-annotations</artifactId>
+			<version>${base-jetty-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
-			<version>${jetty.version}</version>
+			<version>${base-jetty-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>apache-jsp</artifactId>
+			<version>${base-jetty-version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>apache-jstl</artifactId>
+			<version>${base-jetty-version}</version>
+			<type>pom</type>
+		</dependency>
+
+		<!-- spring mvc -->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-jsp</artifactId>
-			<version>${jetty.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- dependency> <groupId>ch.qos.logback</groupId> <artifactId>logback-classic</artifactId> 
+			<version>1.1.6</version> </dependency -->
 		<!-- spring mvc -->
 
 		<dependency>
@@ -70,6 +103,9 @@
 
 		<!-- jackson -->
 
+
+		<!-- jackson -->
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
@@ -94,6 +130,7 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<!-- 打包构建 -->
@@ -101,7 +138,7 @@
 		<finalName>base-springmvc</finalName>
 		<resources>
 			<resource>
-				<directory>${project.basedir}/src/main/resources</directory>
+				<directory>${project.basedir}/src/main/webapp</directory>
 			</resource>
 			<resource>
 				<!-- Include the properties file to provide the build information. -->
@@ -133,11 +170,12 @@
 								<dependencyfilesets prefix="mydeps." />
 								<copy todir="${project.build.directory}/${project.artifactId}/">
 									<fileset dir="${project.build.directory}/classes/">
-										<include name="**/*/Launcher.class" />
+										<include name="**/*/*"/>
+										<!-- include name="**/*/Launcher.class" /> -->
 									</fileset>
 								</copy>
-								<mkdir
-									dir="${project.build.directory}/${project.artifactId}/WEB-INF/lib" />
+								<!-- mkdir dir="${project.build.directory}/${project.artifactId}/WEB-INF/lib" 
+									/ -->
 
 							</tasks>
 						</configuration>
@@ -164,13 +202,9 @@
 									<mainClass>org.base.spring.Launcher</mainClass>
 								</transformer>
 							</transformers>
-							<artifactSet>
-								<includes>
-									<include>org.eclipse.jetty:*</include>
-									<include>*:javax.servlet*</include>
-									<include>org.glassfish:javax.el*</include>
-								</includes>
-							</artifactSet>
+							<!-- artifactSet> <includes> <include>org.eclipse.jetty:*</include> 
+								<include>*:javax.servlet*</include> <include>org.glassfish:javax.el*</include> 
+								</includes> </artifactSet> -->
 							<filters>
 								<filter>
 									<artifact>*:*</artifact>
@@ -203,6 +237,13 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>exec-maven-plugin</artifactId> 
+				<version>1.2</version> <configuration> <executable>java</executable> <arguments> 
+				<argument>-Dtomcat.util.scan.StandardJarScanFilter.jarsToScan=taglibs-standard-impl-*</argument> 
+				<argument>-Dtomcat.util.scan.StandardJarScanFilter.jarsToSkip=apache-*,ecj-*,jetty-*,asm-*,javax.servlet-*,javax.annotation-*,taglibs-standard-spec-*</argument> 
+				<argument>-cp</argument> <classpath /> <argument>org.base.spring.Main</argument> 
+				<argument>8080</argument> </arguments> </configuration> </plugin -->
 		</plugins>
 	</build>
 </project>

@@ -52,7 +52,7 @@
 	<!-- <mvc:resources mapping="assets/js/**" location="assets/js/" />
 	<mvc:resources mapping="assets/css/**" location="assets/css/" /> -->
 
-	<!-- 配置视图解析器 -->
+	<!-- 配置视图解析器 配置bean-jsp映射方式1 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="" />
@@ -60,5 +60,7 @@
 		<!-- <property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" /> -->
 	</bean>
-
+	<!-- 配置 bean与jsp映射方式2-->
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
+	<bean class="org.base.spring.controller.WelcomeController" />
 </beans>

@@ -1,1 +1,8 @@
 when parent module contains different jetty versions,this module war would be lack of some jetty jars
+cd target
+unzip base-springmvc-standalone.zip
+cd bin
+./start.sh
+localhost:8080/base-springmvc/
+java -verbose:class -Xrunjdwp:transport=dt_socket,server=y,address=7899,suspend=y -cp WEB-INF/lib/*:. org/base/spring/Launcher > log.txt
+
