@@ -1,0 +1,18 @@
+http://localhost:1111/hello
+get uer list =>http://localhost:1111/users/ =>[]
+put/delete usr,see AppTest
+
+{"id":1,"name":"test","age":20}
+refer to HelloController
+@RestController：上一篇中用于将返回值转换成json
+@Controller：现在要返回的是一个页面，所以不能再用@RestController，而用普通的@Controller
+
+velocity:tmp.vm
+<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-velocity</artifactId>
+			<version>${boot-version}</version>
+Velocity模板
+http://blog.didispace.com
+
+
+velocity 与restful冲突
