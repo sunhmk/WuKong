@@ -721,6 +721,8 @@
 		<module>base-spring-mybatis</module>
 		<module>base-springmvc</module>
 		<module>base-springboot</module>
+		<module>base-website</module>
+		<module>base-shiro</module>
 	</modules>
 	<profiles>
 		<profile>
