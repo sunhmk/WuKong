@@ -1,0 +1,4 @@
+webini.xml is for shiro.ini.
+rename webini.xml to web.xml
+user,role,permision is conifiged in webini.xml;
+web.xml reads cfg from db.

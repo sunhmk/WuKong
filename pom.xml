@@ -723,6 +723,7 @@
 		<module>base-springboot</module>
 		<module>base-website</module>
 		<module>base-shiro</module>
+		<module>base-angularjs</module>
 	</modules>
 	<profiles>
 		<profile>
