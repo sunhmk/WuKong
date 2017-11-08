@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html ng-app="mainApp" ng-controller="mainAppController">
+<head>
+	<title>大圣系统</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="base-angularjs/resources/lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+	<style type="text/css">
+		body{
+			background: #F6EDE8 url('base-angularjs/resources/img/bg-overlayered.jpg') 50% 0 no-repeat;
+			background-size: cover;
+			min-width: 320px;
+			height: auto;
+			margin-top: 50px;/*导航栏高度为50px*/
+			margin-bottom: 0px;
+		}
+		hr{
+			margin-top: 2px;
+		}
+		.container-fluid{
+			margin-right: 0px;
+			margin-left: 0px;
+		}
+		#asidemenu > .row,.col-md-2,col-md-10,col-md-12{
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+		.footer{
+			width: 100%;
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+		.submenu
+		{
+			padding-left: 15px;
+			position: relative;
+		}
+		/*#asidecontent
+		{
+			/*max-height: calc(100% - 65px);
+			overflow-y: auto;
+		    /*max-height: -moz-calc(100% - 80px);
+  			max-height: -webkit-calc(100% - 80px);
+  			max-height: calc(100% - 80px);
+  			height: calc(100% - 300px);
+		}*/
+	</style>
+</head>
+<body>
+	<div ui-view></div>
+	
+        <button type="button" class="btn btn-default" ng-click="open()">Open me!</button>
+        <button type="button" class="btn btn-default" ng-click="open('lg')">Large modal</button>
+        <button type="button" class="btn btn-default" ng-click="open('sm')">Small modal</button>
+        <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+	<script type="text/javascript" src="base-angularjs/resources/js/funs.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="base-angularjs/resources/lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="base-angularjs/resources/lib/angularjs-1.6.5/angular.js"></script>
+	<script type="text/javascript" src="base-angularjs/resources/lib/angularjs-1.6.5/angular-ui-router.js"></script>
+	<!-- 
+	<script src="base-angularjs/resources/lib/jquery/jquery.min.js"></script>
+	<script src="base-angularjs/resources/lib/jquery/jquery.validate.min.js"></script>-->
+	<!--延时加载-->
+	<script type="text/javascript" src="base-angularjs/resources/lib/angularjs-1.6.5/ocLazyLoad.js"></script>
+	<script type="text/javascript" src="base-angularjs/resources/lib/angularjs-1.6.5/angular-animate.js"></script>
+	<script type="text/javascript" src="base-angularjs/resources/lib/angularjs-1.6.5/toaster.js"></script>
+	<script type="text/javascript" src="base-angularjs/resources/lib/angularjs-1.6.5/ui-load.js"></script>
+	<script type="text/javascript" src="base-angularjs/resources/lib/ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+	
+	<!--script type="text/ng-template" src="base-angularjs/resources/js/cfg/cfg.html" id="myModalContent.html">
+		
+	</script-->
+
+	<script type="text/javascript" src="base-angularjs/resources/js/main.js"></script>
+	<script type="text/javascript" src="base-angularjs/resources/js/router.js"></script>
+	<script type="text/javascript" src="base-angularjs/resources/js/cfg/cfg.js"></script>
+
+</body>
+</html>

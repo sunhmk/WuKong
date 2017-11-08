@@ -26,7 +26,7 @@ public class Swagger2 {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("org.base.springboot.restful"))
+                .apis(RequestHandlerSelectors.basePackage("org.base"))
                 .paths(PathSelectors.any())
                 .build();
     }

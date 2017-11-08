@@ -724,6 +724,7 @@
 		<module>base-website</module>
 		<module>base-shiro</module>
 		<module>base-angularjs</module>
+		<module>base-rest</module>
 	</modules>
 	<profiles>
 		<profile>

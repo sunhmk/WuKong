@@ -1,3 +1,7 @@
+mvn package
+http://localhost:1111/swagger-ui.html
+右键debug
+
 http://localhost:1111/hello
 get uer list =>http://localhost:1111/users/ =>[]
 put/delete usr,see AppTest

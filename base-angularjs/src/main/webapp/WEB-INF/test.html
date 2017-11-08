@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="../resources/css/bootstrap/3.0/bootstrap.css">
+	<script type="text/javascript" src="../resources/lib/angularjs-1.6.5/angular.js"></script>
+	<script type="text/javascript" src="../resources/lib/angularjs-1.6.5/angular-ui-router.js"></script>
+</head>
+<body>
+<body >    
+    <div ng-app="myApp" >
+        <a ui-sref="index">show index</a>    
+        <div ui-view></div>
+    </div>  
+  </body>
+
+  <script type="text/javascript">
+    var app = angular.module('myApp', ['ui.router']);   
+    app.config(["$stateProvider",  function ($stateProvider) {      
+        $stateProvider     
+        .state("home", {
+            url: '/',  
+            template:"<div>homePage</div>"
+
+        })
+        .state("index", {
+            url: '/index/{id}',  
+            template:"<div>indexcontent</div>",
+            resolve: {
+                //这个函数的值会被直接返回，因为它不是数据保证
+                user: function() {
+                  return {
+                    name: "peter",
+                    email: "audiogroup@qq.com"
+                  }
+                },
+                //这个函数为数据保证, 因此它将在控制器被实例化之前载入。
+               detail: function($http) {
+                  return $http({
+                    method: 'JSON',
+                    url: '../resources/data/current_details.jsonp'
+                  });
+                },
+                //前一个数据保证也可作为依赖注入到其他数据保证中！（这个非常实用）
+               myId: function($http, detail) {
+                  $http({
+                    method: 'GET',
+                    url: 'http://facebook.com/api/current_user',
+                    params: {
+                      email: detail.data.contacts[0]
+                    }
+                  })
+                }
+
+            },
+            controller:function(user,detail,myId,$scope){
+                alert(user.name)
+                alert(user.email)
+                //console.log(detail)
+            }
+        })                  
+
+    }]);
+
+  </script>
+ <!--body >    
+    <div ng-app="myApp" >
+        <a ui-sref="index({id:30})">show index</a>    
+        <a ui-sref="test({username:'peter'})">show test</a>
+        <div ui-view></div>
+    </div>  
+  </body>
+
+  <script type="text/javascript">
+    var app = angular.module('myApp', ['ui.router']);   
+    app.config(["$stateProvider",  function ($stateProvider) {      
+        $stateProvider     
+        .state("home", {
+            url: '/',  
+            template:"<div>homePage</div>"
+//file:///work/code/sun-code/wukong/base-angularjs/src/main/webapp/WEB-INF/test.html#!/
+        })
+        .state("index", {
+            url: '/index/:id',  
+            template:"<div>indexcontent</div>",
+            controller:function($stateParams){
+                alert($stateParams.id)
+            }
+        })  
+        .state("test", {
+            url: '/test/:username',  
+            template:"<div>testContent</div>",
+            controller:function($stateParams){
+                alert($stateParams.username)
+            }
+        })          
+
+    }]);
+
+  </script>
+	<!--body >    
+    <div ng-app="myApp" >
+        <a ui-sref="index">show index</a>
+        <a ui-sref="index.content1">content111111</a>
+        <a ui-sref="index.content2">content222222</a>
+        <div ui-view="index" class="panel panel-primary"><div>             
+    </div>  
+  </body>
+
+  <script type="text/javascript">
+    var app = angular.module('myApp', ['ui.router']);   
+    app.config(["$stateProvider",  function ($stateProvider) {      
+        $stateProvider     
+        .state("index", {
+            url: '/index',  
+            views:{
+                'index':{template:"<div ui-view='header' class='panel-heading'></div>  <div ui-view='nav'></div> <div ui-view='body'></div>"},
+                //这里必须要绝对定位
+                'header@index':{template:"<div> <div class='panel-title'>头部内容header</div></div>"},
+                'nav@index':{template:"<div>菜单内容nav</div>"},
+                'body@index':{template:"<div>展示内容contents</div>"}
+            }
+        })    
+        //绝对定位
+        .state("index.content1", {
+            url: '/content1',  
+            views:{
+                'body@index':{template:"<div>content11111111111111111</div>"}
+                //'body@index'表时名为body的view使用index模板
+            }
+        })  
+        //相对定位：该状态的里的名为body的ui-view为相对路径下的（即没有说明具体是哪个模板下的）
+        .state("index.content2", {
+            url: '/content2',  
+            views:{
+                'body':{template:"<div>content2222222222222222222</div>"}//
+            }
+        })      
+
+    }]);
+
+  </script-->
+	<!--body >    
+    <div ng-app="myApp" >
+        <a ui-sref="index">点我显示index内容</a>
+        <div ui-view="header"></div>  
+        <div ui-view="nav"></div>  
+        <div ui-view="body"></div>      
+    </div>  
+  </body>
+
+  <script type="text/javascript">
+    var app = angular.module('myApp', ['ui.router']);   
+    app.config(["$stateProvider",  function ($stateProvider) {      
+        $stateProvider     
+        .state("index", {
+            url: '/index',  
+            views:{
+                'header':{template:"<div>头部内容</div>"},
+                'nav':{template:"<div>菜单内容</div>"},
+                'body':{template:"<div>展示内容</div>"}
+            }
+        })      
+
+    }]);
+
+  </script>
+</body-->
+</html>

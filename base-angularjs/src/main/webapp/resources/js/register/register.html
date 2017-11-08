@@ -1,0 +1,55 @@
+<div class="container col-md-6 col-md-offset-3" style="margin-top: 100px;">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<div class="panel-title"><p class="text-center">用户登录</p></div>
+		</div>
+		<div class="panel-body">
+			<div class="row row-centered">
+				<div class="col-md-12">
+					<form class="form-horizontal" role="form" ng-controller="UserInfoCtrl">
+						<div class="form-group">
+							<label class="col-md-2 control-label">
+								用户名:
+							</label>
+							<div class="col-md-10">
+								<input type="text" class="form-control" placeholder="用户名" ng-model="userInfo.usename">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">
+								密码:
+							</label>
+							<div class="col-md-10">
+								<input type="password" class="form-control" placeholder="只能是数字字母下划线" ng-model="userInfo.password">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">
+								性别:
+							</label>
+							<label class="radio-inline col-xs-offset-1">
+								<input type="radio" name="inlineRadioOptions" value="sex-man"> 男
+							</label>
+							<label class="radio-inline ">
+								<input type="radio" name="inlineRadioOptions" value="sex-wom"> 女
+							</label>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">
+								邮箱：
+							</label>
+							<div class="col-md-10">
+								<input type="email" class="form-control" placeholder="邮箱">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-5 col-md-1">
+								<button class="btn btn-primary" ng-click="getFormData()">注册</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

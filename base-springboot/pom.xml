@@ -60,6 +60,11 @@
 			<artifactId>spring-boot-starter-velocity</artifactId>
 			<version>${boot-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>22.0-rc1</version>
+		</dependency>
 		<!-- conflict with velocity -->
 		<!-- dependency>
 			<groupId>org.springframework.boot</groupId>
